@@ -1,11 +1,11 @@
-package com.example.demo.gestionale.Entity;
+package com.example.demo.Entity;
 
 import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "agents")
-public class Agent {
+@Table(name = "users")
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -19,13 +19,10 @@ public class Agent {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
-    private String role; //"ADMIN" o "AGENT"
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Ticket> tickets;  //Lista di ticket creati dall'utente
 
-    @OneToMany(mappedBy = "agent", cascade = CascadeType.ALL)
-    private List<Ticket> tickets;   //ticket assegnati
-
-    public Agent() {}
+    public User() {}
 
     public Long getId() {
         return id;
@@ -57,14 +54,6 @@ public class Agent {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
     }
 
     public List<Ticket> getTickets() {
