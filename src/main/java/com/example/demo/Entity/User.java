@@ -1,6 +1,7 @@
 package com.example.demo.Entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import java.util.List;
 
 @Entity
@@ -10,19 +11,31 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Name is required")
+    @Size(max = 100, message = "Name must not exceed 100 characters")
     @Column(nullable = false)
     private String name;
 
+    @NotBlank(message = "Email is required")
+    @Email(message = "Invalid email format")
     @Column(nullable = false, unique = true)
     private String email;
 
+    @NotBlank(message = "Password is required")
+    @Size(min = 8, message = "Password must be at least 8 characters long")
     @Column(nullable = false)
     private String password;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Ticket> tickets;  //Lista di ticket creati dall'utente
+    private List<Ticket> tickets;
 
     public User() {}
+
+    public User(String name, String email, String password) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+    }
 
     public Long getId() {
         return id;

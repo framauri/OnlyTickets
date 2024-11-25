@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Ticket</title>
+</head>
+<body>
+
+<h1>Create a new Ticket</h1>
+
+<form th:action="@{/tickets/save}" th:object="${ticket}" method="post">
+
+    <div th:if="${#fields.hasErrors('title')}" th:errors="*{title}" style="color:red;"></div>
+    <label for="title">Title:</label>
+    <input type="text" id="title" th:field="*{title}" required/>
+
+    <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" style="color:red;"></div>
+    <label for="description">Description:</label>
+    <textarea id="description" th:field="*{description}" required></textarea>
+
+    <div th:if="${#fields.hasErrors('status')}" th:errors="*{status}" style="color:red;"></div>
+    <label for="status">Status:</label>
+    <select id="status" th:field="*{status}">
+        <option value="APERTO">Aperto</option>
+        <option value="IN_ELABORAZIONE">In elaborazione</option>
+        <option value="CHIUSO">Chiuso</option>
+    </select>
+
+    <div th:if="${#fields.hasErrors('priority')}" th:errors="*{priority}" style="color:red;"></div>
+    <label for="priority">Priority:</label>
+    <select id="priority" th:field="*{priority}">
+        <option value="BASSA">Bassa</option>
+        <option value="MEDIA">Media</option>
+        <option value="ALTA">Alta</option>
+        <option value="URGENTE">Urgente</option>
+    </select>
+
+    <button type="submit">Save Ticket</button>
+</form>
+
+</body>
+</html>

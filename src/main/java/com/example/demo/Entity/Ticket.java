@@ -1,6 +1,7 @@
 package com.example.demo.Entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import java.util.Date;
 
 @Entity
@@ -11,22 +12,27 @@ public class Ticket {
     private Long id;
 
     @Column(nullable = false)
+    @NotBlank(message = "Title cannot be blank")
+    @Size(max = 255, message = "Title must be at most 255 characters")
     private String title;
 
     @Column(nullable = false, length = 1000)
+    @NotBlank(message = "Description cannot be blank")
     private String description;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String status;  //"Aperto", "In elaborazione", "Chiuso"
+    private Status status;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String priority;  //"Bassa", "Media", "Alta", "Ugente"
+    private Priority priority;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "agent_id")
     private Agent agent;
 
@@ -37,6 +43,26 @@ public class Ticket {
     private Date updatedAt;
 
     public Ticket() {}
+
+    public Ticket(String title, String description, Status status, Priority priority, User user, Agent agent) {
+        this.title = title;
+        this.description = description;
+        this.status = status;
+        this.priority = priority;
+        this.user = user;
+        this.agent = agent;
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = new Date();
+        this.updatedAt = new Date();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = new Date();
+    }
 
     public Long getId() {
         return id;
@@ -62,19 +88,19 @@ public class Ticket {
         this.description = description;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
-    public String getPriority() {
+    public Priority getPriority() {
         return priority;
     }
 
-    public void setPriority(String priority) {
+    public void setPriority(Priority priority) {
         this.priority = priority;
     }
 
@@ -108,5 +134,39 @@ public class Ticket {
 
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    @Override
+    public String toString() {
+        return "Ticket{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", status='" + status + '\'' +
+                ", priority='" + priority + '\'' +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Ticket ticket = (Ticket) o;
+        return id != null && id.equals(ticket.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
+
+    public enum Status {
+        APERTO, IN_ELABORAZIONE, CHIUSO
+    }
+
+    public enum Priority {
+        BASSA, MEDIA, ALTA, URGENTE
     }
 }
