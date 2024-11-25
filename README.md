@@ -68,14 +68,14 @@
 - **Disponibilità garantita** (uptime del 99.9%?).
 
 ### 5. Scalabilità
-- **Progettato per supportare l'espansione** (es. aumento del numero di utenti o dipartimenti).
+- **Progettato per supportare l'espansione** 
 
 ---
 
 ## Requisiti Tecnici
 
 ### 1. Frontend
-- ?? (specificare framework o librerie)
+- ?? HTML puro?  react per mobile?
 - CSS?
 
 ### 2. Backend
@@ -83,11 +83,10 @@
 - **API RESTful** per la comunicazione con il frontend.
 
 ### 3. Database
-- **Relazionale** – quale?
+- **Relazionale** – SQL
 
 ### 4. Hosting e Deployment
-- ?? (specificare piattaforma di hosting)
-- Sistema di containerizzazione (Docker) per la portabilità.
+- ?? 
 
 ### 6. Strumenti di Versionamento e Testing
 - **Versionamento del codice con Git** – GitHub.
